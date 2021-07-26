@@ -78,3 +78,9 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+#map {
+  height: 75vmin;
+  width: 75%;
+  margin: 0 auto;
+}
