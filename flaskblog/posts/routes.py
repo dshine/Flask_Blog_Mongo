@@ -19,8 +19,7 @@ def new_post():
             user_id=current_user
         )
         post.address=form.address.data 
-        post.loc['coordinates'][0]=form.lng.data
-        post.loc['coordinates'][1]=form.lat.data
+        post.loc = [float(form.lng.data), float(form.lat.data)]
         post.save()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
@@ -37,16 +36,15 @@ def post(post_id):
 @posts.route("/post/<post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
+    post = Post.objects.get_or_404(id=post_id)
+    if post.user_id.id != current_user.id:
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
         post.address = form.address.data
-        post.loc['coordinates'][0] = form.lng.data
-        post.loc['coordinates'][1] = form.lat.data
+        post.loc = [float(form.lng.data), float(form.lat.data)]
         post.save()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
@@ -54,8 +52,8 @@ def update_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
         form.address = post.address
-        form.lng = post.loc['coordinates'][0]
-        form.lat = post.loc['coordiantes'][1]
+        #form.lng = post.loc['coordinates'][0]
+        #form.lat = post.loc['coordiantes'][1]
     return render_template('create_post.html', title='Update Post',
                            form=form, legend='Update Post',map_key=current_app.config["GOOGLE_MAPS_API_KEY"])
 
