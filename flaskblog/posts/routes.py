@@ -51,6 +51,7 @@ def post_languages():
 @posts.route("/post/<post_id>")
 def post(post_id):
     post = Post.objects.get_or_404(id=post_id)
+    post.update(inc__views=1)
     return render_template('post.html', title=post.title, post=post)
 
 

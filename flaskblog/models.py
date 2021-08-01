@@ -48,6 +48,7 @@ class Post(db.Document):
     address = db.StringField(max_length=150, nullable=False)
     loc = db.PointField()
     languages = db.ListField(default=[])
+    views = db.IntField(default=0)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
