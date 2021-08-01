@@ -1,6 +1,8 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from werkzeug.exceptions import default_exceptions
+from wtforms.fields.core import StringField
 from flaskblog import db, login_manager
 from flask_login import UserMixin
 
@@ -40,11 +42,18 @@ class User(db.Document, UserMixin):
 class Post(db.Document):
     #id = db.Column(db.Integer, primary_key=True)
     title = db.StringField(nullable=False)
-    date_posted = db.DateField(nullable=False, default=datetime.utcnow)
+    date_posted = db.DateTimeField(nullable=False, default=datetime.utcnow)
     content = db.StringField(nullable=False)
     user_id = db.ReferenceField('User')
     address = db.StringField(max_length=150, nullable=False)
     loc = db.PointField()
+    languages = db.ListField(default=[])
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class Language(db.Document):
+    language = db.StringField(unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"Language('{self.language}')"
