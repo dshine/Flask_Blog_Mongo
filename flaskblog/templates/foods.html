@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+    {{movies}}
+    <div class="row">
+    {% for food in foods.categories %}
+        <div class="col-md-3">
+            <img src="{{food.strCategoryThumb}}" class="img-fluid" alt="{{food.strCategory}}">
+            <button id="{{food.strCategory}}" type="button" class="btn btn-outline-primary likebutton" data-toggle="button" aria-pressed="false" autocomplete="off">Like {{food.strCategory}}</button>
+        </div>
+    {% endfor %}
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".likebutton").click(function(){
+                console.log("button clicked")
+                console.log(this.id)
+                $.ajax({
+                    url: `/foods/like/${this.id}`, 
+                    success: function(result){
+                        console.log(result)
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock%}

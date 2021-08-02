@@ -21,6 +21,7 @@ class User(db.Document, UserMixin):
     image_file = db.StringField(nullable=False, default='default.jpg')
     password = db.StringField(nullable=False)
     posts = db.ReferenceField('Post')
+    likes = db.ListField(default=[])
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
